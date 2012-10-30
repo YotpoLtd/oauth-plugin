@@ -76,7 +76,7 @@ module OAuth
         end
 
         def client_application
-          env["oauth.version"]==1 && env["oauth.client_application"] || oauth20_token.try(:client_application)
+          env["oauth.version"]==1 && env["oauth.client_application"] || oauth20_token.try(:account)
         end
 
         def two_legged
@@ -104,7 +104,7 @@ module OAuth
       end
       
       def current_client_application
-        request.env["oauth.version"]==1 && request.env["oauth.client_application"] || current_token.try(:client_application)
+        request.env["oauth.version"]==1 && request.env["oauth.client_application"] || current_token.try(:account)
       end
       
       def oauth?

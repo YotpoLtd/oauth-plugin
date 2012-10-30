@@ -18,7 +18,7 @@ module ActiveRecord
       end
 
       def check_class_collisions
-        class_collisions '', %w(ClientApplication OauthNonce RequestToken AccessToken OauthToken)
+        class_collisions '', %w(Account OauthNonce RequestToken AccessToken OauthToken)
       end
 
       def copy_models

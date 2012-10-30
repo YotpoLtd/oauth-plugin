@@ -7,14 +7,14 @@ describe OauthClientsController do
     include Devise::TestHelpers
   end  
   include OAuthControllerSpecHelper
-  fixtures :client_applications, :oauth_tokens, :users
+  fixtures :accounts, :oauth_tokens, :users
   before(:each) do
     login_as_application_owner
   end
   
   describe "index" do
     before do
-      @client_applications = @user.client_applications
+      @accounts = @user.accounts
     end
     
     def do_get
@@ -26,9 +26,9 @@ describe OauthClientsController do
       response.should be_success
     end
   
-    it "should assign client_applications" do
+    it "should assign accounts" do
       do_get
-      assigns[:client_applications].should==@client_applications
+      assigns[:accounts].should==@accounts
     end
   
     it "should render index template" do
@@ -48,9 +48,9 @@ describe OauthClientsController do
       response.should be_success
     end
   
-    it "should assign client_applications" do
+    it "should assign accounts" do
       do_get
-      assigns[:client_application].should == current_client_application
+      assigns[:account].should == current_client_application
     end
   
     it "should render show template" do
@@ -71,9 +71,9 @@ describe OauthClientsController do
       response.should be_success
     end
   
-    it "should assign client_applications" do
+    it "should assign accounts" do
       do_get
-      assigns[:client_application].class.should == ClientApplication
+      assigns[:account].class.should == Account
     end
   
     it "should render show template" do
@@ -93,9 +93,9 @@ describe OauthClientsController do
       response.should be_success
     end
   
-    it "should assign client_applications" do
+    it "should assign accounts" do
       do_get
-      assigns[:client_application].should == current_client_application
+      assigns[:account].should == current_client_application
     end
   
     it "should render edit template" do
@@ -109,7 +109,7 @@ describe OauthClientsController do
     
     def do_valid_post
       post :create, 'client_application' => {'name' => 'my site', :url => "http://test.com"}
-      @client_application = ClientApplication.last
+      @account = Account.last
     end
 
     def do_invalid_post
@@ -119,7 +119,7 @@ describe OauthClientsController do
     it "should redirect to new client_application" do
       do_valid_post
       response.should be_redirect
-      response.should redirect_to(:action => "show", :id => @client_application.id)
+      response.should redirect_to(:action => "show", :id => @account.id)
     end
   
     it "should render show template" do
@@ -136,7 +136,7 @@ describe OauthClientsController do
     
     it "should destroy client applications" do
       do_delete
-      ClientApplication.should_not be_exists(1)
+      Account.should_not be_exists(1)
     end
     
     it "should redirect to list" do
@@ -163,9 +163,9 @@ describe OauthClientsController do
       response.should redirect_to(:action => "show", :id => 1)
     end
   
-    it "should assign client_applications" do
+    it "should assign accounts" do
       do_invalid_update
-      assigns[:client_application].should == ClientApplication.find(1)
+      assigns[:account].should == Account.find(1)
     end
   
     it "should render show template" do

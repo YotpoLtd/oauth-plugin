@@ -1,9 +1,9 @@
 # Dummy implementation
-class ClientApplication
+class Account
   attr_accessor :key
 
   def self.find_by_key(key)
-    ClientApplication.new(key)
+    Account.new(key)
   end
 
   def initialize(key)

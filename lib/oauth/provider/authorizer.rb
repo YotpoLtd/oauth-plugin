@@ -12,18 +12,18 @@ module OAuth
       end
 
       def app
-        @app ||= ::ClientApplication.find_by_key!(params[:client_id])
+        @app ||= ::Account.find_by_key!(params[:client_id])
       end
 
       def code
-        @code ||= ::Oauth2Verifier.create! :client_application => app,
+        @code ||= ::Oauth2Verifier.create! :account => app,
                                       :user => @user,
                                       :scope => @params[:scope],
                                       :callback_url => @params[:redirect_uri]
       end
 
       def token
-        @token ||= ::Oauth2Token.create! :client_application => app,
+        @token ||= ::Oauth2Token.create! :account => app,
                                       :user => @user,
                                       :scope => @params[:scope],
                                       :callback_url => @params[:redirect_uri]

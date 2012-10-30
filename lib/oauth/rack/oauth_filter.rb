@@ -32,7 +32,7 @@ module OAuth
           end
 
         elsif oauth1_verify(request) do |request_proxy|
-            client_application = ClientApplication.find_by_key(request_proxy.consumer_key)
+            client_application = Account.find_by_key(request_proxy.consumer_key)
             env["oauth.client_application_candidate"] = client_application
 
             # Store this temporarily in client_application object for use in request token generation

@@ -153,7 +153,7 @@ The generator supports the defaults you have created in your application.rb file
 
 Add the following lines to your user model:
 
-  has_many :client_applications
+  has_many :accounts
   has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :include => [:client_application]
 
 == OAuth Provider generator (Rails 2)
@@ -178,7 +178,7 @@ These can of course be used individually as well.
 
 Add the following lines to your user model:
 
-  has_many :client_applications
+  has_many :accounts
   has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :include => [:client_application]
 
 === Migrate database
@@ -362,7 +362,7 @@ All of these places the tokens user in current_user as you would expect. It also
 * current_token - for accessing the token used to authorize the current request
 * current_client_application - for accessing information about which consumer is currently accessing your request
 
-You could add application specific information to the OauthToken and ClientApplication model for such things as object level access control, billing, expiry etc. Be creative and you can create some really cool applications here.
+You could add application specific information to the OauthToken and Account model for such things as object level access control, billing, expiry etc. Be creative and you can create some really cool applications here.
 
 == OAuth Consumer generator
 

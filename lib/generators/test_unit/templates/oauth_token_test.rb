@@ -2,10 +2,10 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class RequestTokenTest < ActiveSupport::TestCase
 
-  fixtures :client_applications, :users, :oauth_tokens
+  fixtures :accounts, :users, :oauth_tokens
 
   def setup
-    @token = RequestToken.create :client_application=>client_applications(:one)
+    @token = RequestToken.create :account=>accounts(:one)
   end
 
   def test_should_be_valid

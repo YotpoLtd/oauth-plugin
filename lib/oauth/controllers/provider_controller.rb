@@ -33,8 +33,8 @@ module OAuth
       end
 
       def token
-        @client_application = ClientApplication.find_by_key! params[:client_id]
-        if @client_application.secret != params[:client_secret]
+        @account = Account.find_by_app_key! params[:client_id]
+        if @account.secret != params[:client_secret]
           oauth2_error "invalid_client"
           return
         end
@@ -61,7 +61,7 @@ module OAuth
             @authorizer = OAuth::Provider::Authorizer.new current_user, user_authorizes_token?, params
             redirect_to @authorizer.redirect_uri
           else
-            @client_application = ClientApplication.find_by_key! params[:client_id]
+            @account = Account.find_by_app_key! params[:client_id]
             render :action => "oauth2_authorize"
           end
         end
@@ -71,7 +71,7 @@ module OAuth
         @token = current_user.tokens.find_by_token! params[:token]
         if @token
           @token.invalidate!
-          flash[:notice] = "You've revoked the token for #{@token.client_application.name}"
+          flash[:notice] = "You've revoked the token for #{@token.account.name}"
         end
         redirect_to oauth_clients_url
       end
@@ -108,7 +108,7 @@ module OAuth
           if request.post?
             if user_authorizes_token?
               @token.authorize!(current_user)
-              callback_url  = @token.oob? ? @token.client_application.callback_url : @token.callback_url
+              callback_url  = @token.oob? ? @token.account.callback_url : @token.callback_url
               @redirect_url = URI.parse(callback_url) unless callback_url.blank?
 
               unless @redirect_url.to_s.blank?
@@ -132,7 +132,7 @@ module OAuth
 
       # http://tools.ietf.org/html/draft-ietf-oauth-v2-22#section-4.1.1
       def oauth2_token_authorization_code
-        @verification_code =  @client_application.oauth2_verifiers.find_by_token params[:code]
+        @verification_code =  @account.oauth2_verifiers.find_by_token params[:code]
         unless @verification_code
           oauth2_error
           return
@@ -152,7 +152,7 @@ module OAuth
           oauth2_error
           return
         end
-        @token = Oauth2Token.create :client_application=>@client_application, :user=>@user, :scope=>params[:scope]
+        @token = Oauth2Token.create :account=>@account, :user=>@user, :scope=>params[:scope]
         render :json=>@token
       end
 
@@ -161,9 +161,9 @@ module OAuth
         User.authenticate(username,password)
       end
 
-      # autonomous authorization which creates a token for client_applications user
+      # autonomous authorization which creates a token for accounts user
       def oauth2_token_client_credentials
-        @token = Oauth2Token.create :client_application=>@client_application, :user=>@client_application.user, :scope=>params[:scope]
+        @token = Oauth2Token.create :account=>@account, :user=>@account.user, :scope=>params[:scope]
         render :json=>@token
       end
 

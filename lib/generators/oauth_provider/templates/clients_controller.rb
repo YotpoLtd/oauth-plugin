@@ -3,19 +3,19 @@ class OauthClientsController < ApplicationController
   before_filter :get_client_application, :only => [:show, :edit, :update, :destroy]
 
   def index
-    @client_applications = current_user.client_applications
+    @accounts = current_user.accounts
     @tokens = current_user.tokens.find :all, :conditions => 'oauth_tokens.invalidated_at is null and oauth_tokens.authorized_at is not null'
   end
 
   def new
-    @client_application = ClientApplication.new
+    @account = Account.new
   end
 
   def create
-    @client_application = current_user.client_applications.build(params[:client_application])
-    if @client_application.save
+    @account = current_user.accounts.build(params[:account])
+    if @account.save
       flash[:notice] = "Registered the information successfully"
-      redirect_to :action => "show", :id => @client_application.id
+      redirect_to :action => "show", :id => @account.id
     else
       render :action => "new"
     end
@@ -28,23 +28,23 @@ class OauthClientsController < ApplicationController
   end
 
   def update
-    if @client_application.update_attributes(params[:client_application])
+    if @account.update_attributes(params[:account])
       flash[:notice] = "Updated the client information successfully"
-      redirect_to :action => "show", :id => @client_application.id
+      redirect_to :action => "show", :id => @account.id
     else
       render :action => "edit"
     end
   end
 
   def destroy
-    @client_application.destroy
+    @account.destroy
     flash[:notice] = "Destroyed the client application registration"
     redirect_to :action => "index"
   end
 
   private
   def get_client_application
-    unless @client_application = current_user.client_applications.find(params[:id])
+    unless @account = current_user.accounts.find(params[:id])
       flash.now[:error] = "Wrong application id"
       raise ActiveRecord::RecordNotFound
     end

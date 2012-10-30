@@ -25,7 +25,7 @@ module Rspec
 
       def create_fixture_file
         if options[:fixtures] && options[:fixture_replacement].nil?
-          template 'client_applications.yml', File.join('test/fixtures', 'client_applications.yml')
+          template 'accounts.yml', File.join('test/fixtures', 'accounts.yml')
           template 'oauth_tokens.yml',        File.join('test/fixtures', 'oauth_tokens.yml')
           template 'oauth_nonces.yml',        File.join('test/fixtures', 'oauth_nonces.yml')
         end
