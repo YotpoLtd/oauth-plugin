@@ -163,7 +163,7 @@ module OAuth
 
       # autonomous authorization which creates a token for accounts user
       def oauth2_token_client_credentials
-        @token = Oauth2Token.create :account=>@account, :user=>@account.user, :scope=>params[:scope]
+        @token = Oauth2Token.create :account=>@account, :user=>@account.users.first, :scope=>params[:scope]
         render :json=>@token
       end
 
